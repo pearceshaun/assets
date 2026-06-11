@@ -1,34 +1,64 @@
-/* Gousto picker template styles — approved metadata-led layout (2026-06-10)
- * with optional photo headers (2026-06-11). Uses the visualize host CSS
- * variables with neutral fallbacks so dark mode just works.
+/* Gousto picker template styles — Gousto brand-forward (2026-06-11).
+ * Studied from gousto.co.uk via `hallmark study`: white paper, warm-slate ink,
+ * electric-indigo #412dee accent, pill buttons, soft slate shadow, Hanken Grotesk
+ * (Axiforma stand-in — Axiforma is commercial + not on Google Fonts). The card
+ * OWNS its surface (white) rather than inheriting host theme vars, so it reads as
+ * Gousto on a light or a dark chat. Fonts + icons are pulled by this file's own
+ * @imports (CSP allowlists fonts.googleapis.com / fonts.gstatic.com / jsdelivr),
+ * so the widget shell needs no extra <link>.
  * Canonical source: skills/gousto-account/widget/picker.css (claude repo);
  * published copy: picker/picker.css in pearceshaun/assets (pin by SHA). */
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap");
 @import url("https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css");
 
 #gousto-picker {
-  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
-  color: var(--color-text-primary, inherit);
+  /* Brand-forward tokens — explicit Gousto values, not host vars. */
+  --gp-font: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --gp-paper: #ffffff;
+  --gp-paper-2: #f4f7fa;
+  --gp-tint: #eae9ff;            /* pale indigo wash */
+  --gp-ink: #333d47;            /* warm slate, never pure black */
+  --gp-ink-2: #516272;          /* secondary slate */
+  --gp-border: #e1e5ea;
+  --gp-accent: #412dee;         /* Gousto electric indigo */
+  --gp-accent-hover: #615cff;
+  --gp-urgent: #ff0032;         /* scarlet — offers + remove only */
+  --gp-success: #008610;
+  --gp-shadow: 0 1px 2px rgba(33, 41, 48, 0.05), 0 10px 28px rgba(33, 41, 48, 0.07);
+  --gp-shadow-hover: 0 2px 4px rgba(33, 41, 48, 0.06), 0 16px 40px rgba(33, 41, 48, 0.11);
+  --gp-radius-card: 16px;
+  --gp-radius-tile: 12px;
+
+  font-family: var(--gp-font);
+  color: var(--gp-ink);
+  line-height: 1.4;
 }
+
 .gp-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 16px;
 }
+
 .gp-card {
   position: relative;
-  border: 1px solid var(--color-border, rgba(128, 128, 128, 0.25));
-  border-radius: 12px;
+  background: var(--gp-paper);
+  border: 1px solid var(--gp-border);
+  border-radius: var(--gp-radius-card);
   overflow: hidden;
-  background: var(--color-background, transparent);
+  box-shadow: var(--gp-shadow);
+  transition: box-shadow 0.22s ease, border-color 0.22s ease;
 }
+.gp-card:hover { box-shadow: var(--gp-shadow-hover); }
 .gp-card.gp-swapping {
-  outline: 2px solid var(--color-accent, #d3055c);
-  outline-offset: -2px;
+  border-color: var(--gp-accent);
+  box-shadow: 0 0 0 2px var(--gp-accent), var(--gp-shadow-hover);
 }
+
 .gp-head {
   position: relative;
-  height: 200px;
-  background: var(--color-background-secondary, rgba(128, 128, 128, 0.12));
+  height: 188px;
+  background: var(--gp-tint);
 }
 .gp-head img {
   width: 100%;
@@ -43,130 +73,178 @@
   inset: 0;
   align-items: center;
   justify-content: center;
-  font-size: 44px;
-  opacity: 0.55;
+  font-size: 46px;
+  color: var(--gp-accent);
+  opacity: 0.5;
 }
 .gp-head.gp-noimg .gp-icon { display: flex; }
+
 .gp-chip {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 9px;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  padding: 5px 11px;
   border-radius: 999px;
-  background: var(--color-background, #fff);
-  border: 1px solid var(--color-border, rgba(128, 128, 128, 0.25));
+  background: var(--gp-tint);
+  color: var(--gp-accent);
+  box-shadow: 0 1px 2px rgba(33, 41, 48, 0.12);
 }
 .gp-chip.gp-stretch {
-  background: var(--color-accent, #d3055c);
-  border-color: transparent;
+  background: var(--gp-accent);
   color: #fff;
 }
+
 .gp-x {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  width: 24px;
-  height: 24px;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: none;
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
-  font-size: 15px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--gp-ink);
+  font-size: 16px;
   line-height: 1;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(33, 41, 48, 0.25);
+  transition: color 0.15s ease, background 0.15s ease;
 }
-.gp-body { padding: 12px 14px 14px; }
-.gp-title { font-weight: 650; line-height: 1.25; margin-bottom: 6px; }
+.gp-x:hover { background: #fff; color: var(--gp-urgent); }
+
+.gp-body { padding: 14px 16px 16px; }
+.gp-title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
 .gp-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 12px;
+  gap: 5px 13px;
+  align-items: center;
   font-size: 12.5px;
-  color: var(--color-text-secondary, rgba(128, 128, 128, 0.95));
-  margin-bottom: 6px;
+  font-weight: 500;
+  color: var(--gp-ink-2);
+  margin-bottom: 8px;
 }
-.gp-meta .ti { margin-right: 3px; }
+.gp-meta > span { display: inline-flex; align-items: center; }
+.gp-meta .ti { margin-right: 4px; font-size: 14px; }
 .gp-tag {
-  border: 1px solid var(--color-border, rgba(128, 128, 128, 0.25));
+  border: 1px solid var(--gp-border);
   border-radius: 999px;
-  padding: 0 7px;
+  padding: 1px 9px;
   font-size: 11px;
+  font-weight: 600;
+  color: var(--gp-ink-2);
 }
 .gp-why {
   font-style: italic;
-  font-size: 12.5px;
-  color: var(--color-text-secondary, rgba(128, 128, 128, 0.95));
-  margin-bottom: 10px;
+  font-size: 13px;
+  color: var(--gp-ink-2);
+  margin-bottom: 14px;
 }
-.gp-actions { display: flex; gap: 8px; }
+
+.gp-actions { display: flex; gap: 9px; }
 .gp-btn {
   font: inherit;
   font-size: 13px;
-  padding: 6px 13px;
-  border-radius: 8px;
-  border: 1px solid var(--color-border, rgba(128, 128, 128, 0.3));
-  background: var(--color-background-secondary, rgba(128, 128, 128, 0.1));
-  color: inherit;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--gp-border);
+  background: var(--gp-paper);
+  color: var(--gp-ink);
   cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
-.gp-btn:hover { filter: brightness(1.08); }
+.gp-btn:hover { border-color: var(--gp-accent); color: var(--gp-accent); }
+.gp-btn:active { transform: translateY(1px); }
 .gp-primary {
-  background: var(--color-accent, #d3055c);
+  background: var(--gp-accent);
   border-color: transparent;
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
 }
-.gp-swaprow { margin-top: 14px; }
+.gp-primary:hover { background: var(--gp-accent-hover); border-color: transparent; color: #fff; }
+.gp-btn:focus-visible,
+.gp-tile:focus-visible,
+.gp-x:focus-visible {
+  outline: 2px solid var(--gp-accent);
+  outline-offset: 2px;
+}
+
+.gp-swaprow { margin-top: 18px; }
 .gp-swaplabel {
-  font-size: 12px;
-  color: var(--color-text-secondary, rgba(128, 128, 128, 0.95));
-  margin-bottom: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--gp-ink-2);
+  margin-bottom: 9px;
 }
 .gp-tiles {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
+  gap: 10px;
 }
 .gp-tile {
   font: inherit;
   text-align: left;
-  padding: 0 0 8px;
-  border: 1px solid var(--color-border, rgba(128, 128, 128, 0.25));
-  border-radius: 10px;
+  padding: 0 0 9px;
+  border: 1px solid var(--gp-border);
+  border-radius: var(--gp-radius-tile);
   overflow: hidden;
-  background: var(--color-background, transparent);
-  color: inherit;
+  background: var(--gp-paper);
+  color: var(--gp-ink);
   cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-.gp-tile:hover { border-color: var(--color-accent, #d3055c); }
-.gp-tile .gp-head { height: 84px; }
+.gp-tile:hover { border-color: var(--gp-accent); box-shadow: var(--gp-shadow); }
+.gp-tile .gp-head { height: 86px; }
 .gp-tile .gp-head .gp-icon { font-size: 26px; }
 .gp-tile-title {
   display: block;
   font-size: 12.5px;
   font-weight: 600;
   line-height: 1.25;
-  padding: 7px 9px 2px;
+  padding: 8px 10px 2px;
 }
 .gp-tile-stat {
   display: block;
   font-size: 11.5px;
-  padding: 0 9px;
-  color: var(--color-text-secondary, rgba(128, 128, 128, 0.95));
+  font-weight: 500;
+  padding: 0 10px;
+  color: var(--gp-ink-2);
 }
+
 .gp-footer {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--color-border, rgba(128, 128, 128, 0.25));
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--gp-border);
   font-size: 13px;
+  color: var(--gp-ink);
 }
-.gp-cutoff .ti { margin-right: 5px; }
-.gp-price { font-size: 13px; }
-.gp-promo { color: var(--color-text-secondary, rgba(128, 128, 128, 0.95)); font-size: 12px; }
+.gp-cutoff { display: inline-flex; align-items: center; font-weight: 500; color: var(--gp-ink-2); }
+.gp-cutoff .ti { margin-right: 6px; color: var(--gp-accent); font-size: 15px; }
+.gp-price { font-size: 13px; font-weight: 500; }
+.gp-price strong { font-weight: 700; }
+.gp-promo { color: var(--gp-urgent); font-size: 12px; font-weight: 700; }
 .gp-spacer { flex: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gp-card, .gp-btn, .gp-tile, .gp-x { transition: none; }
+  .gp-btn:active { transform: none; }
+}
