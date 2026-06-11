@@ -26,6 +26,7 @@
   var swaps = (D.swaps || []).slice();
   var minMeals = D.min_meals || 2;
   var maxMeals = D.max_meals || 5;
+  var mode = D.mode || "subscription"; // "oneoff" = standalone transactional box
   var swapMode = null; // index of the pick currently being swapped
   var trail = [];      // human-readable log of changes, sent with Confirm
 
@@ -50,6 +51,18 @@
     return '<div class="gp-price">' + n + " meals · " + (p.portions || 2) +
       " portions — " + gbp(recipes) + " recipes + " + gbp(p.delivery || 0) +
       " delivery = <strong>" + gbp(total) + "</strong>" + promo + "</div>";
+  }
+
+  function oneoffBanner() {
+    if (mode !== "oneoff") return "";
+    var bits = ["<strong>One-off box</strong>"];
+    if (D.week) bits.push(esc(D.date_human || D.week));
+    if (D.delivery_window) bits.push(esc(D.delivery_window));
+    var express = D.is_express ? '<span class="gp-express">next-day</span>' : "";
+    return '<div class="gp-oneoff"><i class="ti ti-package"></i>' + bits.join(" · ") +
+      express + '<button class="gp-btn gp-datebtn" data-action="changedate">Change date</button>' +
+      '<div class="gp-oneoff-note">Separate from your subscription · charged to your card on file at the cut-off</div>' +
+      "</div>";
   }
 
   function header(r, big) {
@@ -103,6 +116,7 @@
       : (canAdd ? "Tap an alternative to add it as an extra meal (tap Swap on a card to exchange instead)." :
         "Tap Swap on a card, then an alternative below.");
     root.innerHTML =
+      oneoffBanner() +
       '<div class="gp-grid">' + picks.map(card).join("") + "</div>" +
       (swaps.length ? '<div class="gp-swaprow"><div class="gp-swaphead">Likely swaps</div>' +
         '<div class="gp-swaplabel">' + esc(hint) + "</div><div class=\"gp-tiles\">" +
@@ -112,17 +126,24 @@
       priceLine() +
       '<span class="gp-spacer"></span>' +
       '<button class="gp-btn" data-action="browse">Browse full menu</button>' +
-      '<button class="gp-btn gp-primary" data-action="confirm">Confirm ' +
-      picks.length + " meals</button>" +
+      '<button class="gp-btn gp-primary" data-action="confirm">' +
+      (mode === "oneoff" ? "Order " : "Confirm ") + picks.length + " meals</button>" +
       "</div>";
   }
 
   function confirmMessage() {
     var ids = picks.map(function (r) { return r.core_id; }).join(",");
     var titles = picks.map(function (r) { return '"' + r.title + '"'; }).join(", ");
-    var msg = "Confirm my Gousto recipes for order " + D.order_id +
-      " (deliver " + D.week + ", menu " + D.menu_id + "): " + picks.length +
-      " meals, core ids " + ids + " — " + titles + ".";
+    var msg;
+    if (mode === "oneoff") {
+      // Routes to `gousto.py oneoff-create --date <week> --core-ids <ids> --confirm`.
+      msg = "Order a one-off Gousto box (deliver " + D.week + ", menu " + D.menu_id +
+        "): " + picks.length + " meals, core ids " + ids + " — " + titles + ".";
+    } else {
+      msg = "Confirm my Gousto recipes for order " + D.order_id +
+        " (deliver " + D.week + ", menu " + D.menu_id + "): " + picks.length +
+        " meals, core ids " + ids + " — " + titles + ".";
+    }
     if (trail.length) msg += " Changes made in the picker: " + trail.join("; ") + ".";
     return msg;
   }
@@ -162,7 +183,13 @@
       return;
     } else if (action === "browse") {
       if (typeof sendPrompt === "function")
-        sendPrompt("Browse the full Gousto menu this week");
+        sendPrompt(mode === "oneoff"
+          ? "Browse the full Gousto menu for the one-off box on " + D.week
+          : "Browse the full Gousto menu this week");
+      return;
+    } else if (action === "changedate") {
+      if (typeof sendPrompt === "function")
+        sendPrompt("Show me other available one-off Gousto delivery dates");
       return;
     } else if (action === "confirm") {
       if (typeof sendPrompt === "function") sendPrompt(confirmMessage());
