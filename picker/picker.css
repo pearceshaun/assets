@@ -1,0 +1,172 @@
+/* Gousto picker template styles — approved metadata-led layout (2026-06-10)
+ * with optional photo headers (2026-06-11). Uses the visualize host CSS
+ * variables with neutral fallbacks so dark mode just works.
+ * Canonical source: skills/gousto-account/widget/picker.css (claude repo);
+ * published copy: picker/picker.css in pearceshaun/assets (pin by SHA). */
+@import url("https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css");
+
+#gousto-picker {
+  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  color: var(--color-text-primary, inherit);
+}
+.gp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+.gp-card {
+  position: relative;
+  border: 1px solid var(--color-border, rgba(128, 128, 128, 0.25));
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--color-background, transparent);
+}
+.gp-card.gp-swapping {
+  outline: 2px solid var(--color-accent, #d3055c);
+  outline-offset: -2px;
+}
+.gp-head {
+  position: relative;
+  height: 200px;
+  background: var(--color-background-secondary, rgba(128, 128, 128, 0.12));
+}
+.gp-head img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.gp-head.gp-noimg img { display: none; }
+.gp-head .gp-icon {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  opacity: 0.55;
+}
+.gp-head.gp-noimg .gp-icon { display: flex; }
+.gp-chip {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--color-background, #fff);
+  border: 1px solid var(--color-border, rgba(128, 128, 128, 0.25));
+}
+.gp-chip.gp-stretch {
+  background: var(--color-accent, #d3055c);
+  border-color: transparent;
+  color: #fff;
+}
+.gp-x {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+.gp-body { padding: 12px 14px 14px; }
+.gp-title { font-weight: 650; line-height: 1.25; margin-bottom: 6px; }
+.gp-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: 12.5px;
+  color: var(--color-text-secondary, rgba(128, 128, 128, 0.95));
+  margin-bottom: 6px;
+}
+.gp-meta .ti { margin-right: 3px; }
+.gp-tag {
+  border: 1px solid var(--color-border, rgba(128, 128, 128, 0.25));
+  border-radius: 999px;
+  padding: 0 7px;
+  font-size: 11px;
+}
+.gp-why {
+  font-style: italic;
+  font-size: 12.5px;
+  color: var(--color-text-secondary, rgba(128, 128, 128, 0.95));
+  margin-bottom: 10px;
+}
+.gp-actions { display: flex; gap: 8px; }
+.gp-btn {
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 13px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border, rgba(128, 128, 128, 0.3));
+  background: var(--color-background-secondary, rgba(128, 128, 128, 0.1));
+  color: inherit;
+  cursor: pointer;
+}
+.gp-btn:hover { filter: brightness(1.08); }
+.gp-primary {
+  background: var(--color-accent, #d3055c);
+  border-color: transparent;
+  color: #fff;
+  font-weight: 600;
+}
+.gp-swaprow { margin-top: 14px; }
+.gp-swaplabel {
+  font-size: 12px;
+  color: var(--color-text-secondary, rgba(128, 128, 128, 0.95));
+  margin-bottom: 7px;
+}
+.gp-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+}
+.gp-tile {
+  font: inherit;
+  text-align: left;
+  padding: 0 0 8px;
+  border: 1px solid var(--color-border, rgba(128, 128, 128, 0.25));
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-background, transparent);
+  color: inherit;
+  cursor: pointer;
+}
+.gp-tile:hover { border-color: var(--color-accent, #d3055c); }
+.gp-tile .gp-head { height: 84px; }
+.gp-tile .gp-head .gp-icon { font-size: 26px; }
+.gp-tile-title {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.25;
+  padding: 7px 9px 2px;
+}
+.gp-tile-stat {
+  display: block;
+  font-size: 11.5px;
+  padding: 0 9px;
+  color: var(--color-text-secondary, rgba(128, 128, 128, 0.95));
+}
+.gp-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border, rgba(128, 128, 128, 0.25));
+  font-size: 13px;
+}
+.gp-cutoff .ti { margin-right: 5px; }
+.gp-price { font-size: 13px; }
+.gp-promo { color: var(--color-text-secondary, rgba(128, 128, 128, 0.95)); font-size: 12px; }
+.gp-spacer { flex: 1; }
