@@ -1,4 +1,4 @@
-/* Gousto picker template styles — Gousto brand-forward (2026-06-11).
+/* Gousto picker template styles — Gousto brand-forward (2026-06-11, v2).
  * Studied from gousto.co.uk via `hallmark study`: white paper, warm-slate ink,
  * electric-indigo #412dee accent, pill buttons, soft slate shadow, Hanken Grotesk
  * (Axiforma stand-in — Axiforma is commercial + not on Google Fonts). The card
@@ -32,12 +32,14 @@
   font-family: var(--gp-font);
   color: var(--gp-ink);
   line-height: 1.4;
+  /* Breathing room so cards/tiles aren't flush against the widget edges. */
+  padding: 6px 16px 18px;
 }
 
 .gp-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
-  gap: 16px;
+  gap: 18px;
 }
 
 .gp-card {
@@ -84,10 +86,10 @@
   top: 12px;
   right: 12px;
   z-index: 2;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.01em;
-  padding: 5px 11px;
+  padding: 5px 12px;
   border-radius: 999px;
   background: var(--gp-tint);
   color: var(--gp-accent);
@@ -120,47 +122,47 @@
 }
 .gp-x:hover { background: #fff; color: var(--gp-urgent); }
 
-.gp-body { padding: 14px 16px 16px; }
+.gp-body { padding: 16px 18px 18px; }
 .gp-title {
   font-weight: 700;
-  font-size: 16px;
-  line-height: 1.22;
+  font-size: 17px;
+  line-height: 1.25;
   letter-spacing: -0.01em;
-  margin-bottom: 8px;
+  margin-bottom: 9px;
 }
 .gp-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px 13px;
+  gap: 6px 14px;
   align-items: center;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--gp-ink-2);
-  margin-bottom: 8px;
+  margin-bottom: 9px;
 }
 .gp-meta > span { display: inline-flex; align-items: center; }
-.gp-meta .ti { margin-right: 4px; font-size: 14px; }
+.gp-meta .ti { margin-right: 5px; font-size: 15px; }
 .gp-tag {
   border: 1px solid var(--gp-border);
   border-radius: 999px;
-  padding: 1px 9px;
-  font-size: 11px;
+  padding: 1px 10px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--gp-ink-2);
 }
 .gp-why {
   font-style: italic;
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--gp-ink-2);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
-.gp-actions { display: flex; gap: 9px; }
+.gp-actions { display: flex; gap: 10px; }
 .gp-btn {
   font: inherit;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  padding: 8px 16px;
+  padding: 10px 18px;
   border-radius: 999px;
   border: 1px solid var(--gp-border);
   background: var(--gp-paper);
@@ -168,15 +170,25 @@
   cursor: pointer;
   transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
-.gp-btn:hover { border-color: var(--gp-accent); color: var(--gp-accent); }
 .gp-btn:active { transform: translateY(1px); }
-.gp-primary {
-  background: var(--gp-accent);
-  border-color: transparent;
-  color: #fff;
-  font-weight: 700;
+
+/* The visualize host forces a background + colour onto <button> elements with
+ * !important, which otherwise flattens our filled primary into a ghost and could
+ * leave footer ghosts low-contrast on a dark chat. Re-assert ours, id-scoped +
+ * !important, so the primary reads as the clear primary action everywhere. */
+#gousto-picker .gp-btn {
+  background: var(--gp-paper) !important;
+  color: var(--gp-ink) !important;
 }
-.gp-primary:hover { background: var(--gp-accent-hover); border-color: transparent; color: #fff; }
+#gousto-picker .gp-btn:hover { border-color: var(--gp-accent); color: var(--gp-accent) !important; }
+#gousto-picker .gp-primary {
+  background: var(--gp-accent) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(65, 45, 238, 0.30);
+}
+#gousto-picker .gp-primary:hover { background: var(--gp-accent-hover) !important; color: #fff !important; }
 .gp-btn:focus-visible,
 .gp-tile:focus-visible,
 .gp-x:focus-visible {
@@ -184,22 +196,29 @@
   outline-offset: 2px;
 }
 
-.gp-swaprow { margin-top: 18px; }
+.gp-swaprow { margin-top: 28px; }
+.gp-swaphead {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--gp-ink);
+  margin-bottom: 4px;
+}
 .gp-swaplabel {
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 13.5px;
+  font-weight: 500;
   color: var(--gp-ink-2);
-  margin-bottom: 9px;
+  margin-bottom: 14px;
 }
 .gp-tiles {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(min(160px, 100%), 1fr));
+  gap: 12px;
 }
 .gp-tile {
   font: inherit;
   text-align: left;
-  padding: 0 0 9px;
+  padding: 0 0 10px;
   border: 1px solid var(--gp-border);
   border-radius: var(--gp-radius-tile);
   overflow: hidden;
@@ -209,20 +228,20 @@
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .gp-tile:hover { border-color: var(--gp-accent); box-shadow: var(--gp-shadow); }
-.gp-tile .gp-head { height: 86px; }
-.gp-tile .gp-head .gp-icon { font-size: 26px; }
+.gp-tile .gp-head { height: 92px; }
+.gp-tile .gp-head .gp-icon { font-size: 28px; }
 .gp-tile-title {
   display: block;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
-  line-height: 1.25;
-  padding: 8px 10px 2px;
+  line-height: 1.28;
+  padding: 9px 11px 2px;
 }
 .gp-tile-stat {
   display: block;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 500;
-  padding: 0 10px;
+  padding: 0 11px;
   color: var(--gp-ink-2);
 }
 
@@ -230,19 +249,19 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  margin-top: 18px;
-  padding-top: 16px;
+  gap: 12px 18px;
+  margin-top: 30px;
+  padding-top: 20px;
   border-top: 1px solid var(--gp-border);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--gp-ink);
 }
-.gp-cutoff { display: inline-flex; align-items: center; font-weight: 500; color: var(--gp-ink-2); }
-.gp-cutoff .ti { margin-right: 6px; color: var(--gp-accent); font-size: 15px; }
-.gp-price { font-size: 13px; font-weight: 500; }
+.gp-cutoff { display: inline-flex; align-items: center; font-size: 14px; font-weight: 600; color: var(--gp-ink); }
+.gp-cutoff .ti { margin-right: 7px; color: var(--gp-accent); font-size: 17px; }
+.gp-price { font-size: 14px; font-weight: 500; }
 .gp-price strong { font-weight: 700; }
-.gp-promo { color: var(--gp-urgent); font-size: 12px; font-weight: 700; }
-.gp-spacer { flex: 1; }
+.gp-promo { color: var(--gp-urgent); font-size: 12.5px; font-weight: 700; }
+.gp-spacer { flex: 1; min-width: 12px; }
 
 @media (prefers-reduced-motion: reduce) {
   .gp-card, .gp-btn, .gp-tile, .gp-x { transition: none; }

@@ -104,8 +104,9 @@
         "Tap Swap on a card, then an alternative below.");
     root.innerHTML =
       '<div class="gp-grid">' + picks.map(card).join("") + "</div>" +
-      (swaps.length ? '<div class="gp-swaprow"><div class="gp-swaplabel">Likely swaps — ' +
-        esc(hint) + "</div><div class=\"gp-tiles\">" + swaps.map(tile).join("") + "</div></div>" : "") +
+      (swaps.length ? '<div class="gp-swaprow"><div class="gp-swaphead">Likely swaps</div>' +
+        '<div class="gp-swaplabel">' + esc(hint) + "</div><div class=\"gp-tiles\">" +
+        swaps.map(tile).join("") + "</div></div>" : "") +
       '<div class="gp-footer">' +
       '<span class="gp-cutoff"><i class="ti ti-calendar"></i>' + esc(D.cutoff || "") + "</span>" +
       priceLine() +
