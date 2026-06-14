@@ -188,6 +188,13 @@
   font-weight: 600;
   color: var(--gp-ink-2);
 }
+.gp-you {
+  font-weight: 700;
+  color: var(--gp-accent);
+  background: var(--gp-tint);
+  padding: 1px 9px;
+  border-radius: 999px;
+}
 .gp-why {
   font-style: italic;
   font-size: 13.5px;

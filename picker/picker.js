@@ -77,6 +77,8 @@
     var bits = [];
     if (r.rating) bits.push('<span><i class="ti ti-star"></i>' + esc(r.rating) +
       (r.rating_count ? " (" + esc(r.rating_count) + ")" : "") + "</span>");
+    if (r.my_rating) bits.push('<span class="gp-you" title="Your past rating">You ' +
+      esc(r.my_rating) + "★</span>");
     if (r.prep) bits.push('<span><i class="ti ti-clock"></i>' + esc(r.prep) + " min</span>");
     if (r.kcal) bits.push('<span><i class="ti ti-flame"></i>' + esc(r.kcal) + " kcal</span>");
     (r.tags || []).forEach(function (t) { bits.push('<span class="gp-tag">' + esc(t) + "</span>"); });
