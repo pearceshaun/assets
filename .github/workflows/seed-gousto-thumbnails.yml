@@ -1,0 +1,36 @@
+name: Seed Gousto thumbnails
+
+# Public menu in -> resized JPEGs committed to this repo. No secrets needed.
+on:
+  schedule:
+    - cron: "0 6 * * 1"   # Mondays 06:00 UTC, ahead of the weekly proposal
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seed-gousto-thumbnails
+  cancel-in-progress: false
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "pillow>=11,<12"
+      - run: python tools/seed_gousto.py
+      - name: Commit new thumbnails
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/gousto/by-recipe
+          if git diff --cached --quiet; then
+            echo "No new thumbnails to commit."
+          else
+            git commit -m "chore: seed Gousto recipe thumbnails"
+            git push
+          fi
